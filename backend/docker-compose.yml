@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    container_name: buzzvel
+    build:
+      context: ./
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "80:80"
+
+  mariadb:
+    image: mariadb:10.7.3
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - ./docker/mariadb-data:/var/lib/mysql
+    ports:
+      - 3080:3306
