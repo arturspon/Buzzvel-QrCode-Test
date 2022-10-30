@@ -3,6 +3,8 @@
 This repository contains the source code of a test from Buzzvel.  
 Below are the instructions to get the API and the WebApp up and running.
 
+![Preview](showcase.gif)
+
 ## The backend
 
 The backend consists in a Laravel API. In order to run it, enter the backend folder and run the following command:
