@@ -1,8 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../utils/api";
 import "../App.css";
 import "../index.css";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import QrCode from "../components/QrCode";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -94,19 +94,25 @@ export default function GenerateQrCodePage() {
       const { data } = await api.post("api/pages", postData);
       setQrcodeValue(`${window.location.origin}/${data.name}`);
     } catch (error: any) {
-      if (error.isAxiosError && typeof error.response?.data == "object") {
-        Object.entries(error.response.data).forEach(
-          ([fieldName, errorList]: any) => {
-            setError(fieldName, {
-              message: errorList[0],
-            });
-          }
-        );
-      } else {
+      if (
+        error.response?.status == 500 ||
+        !error.isAxiosError ||
+        typeof error.response?.data != "object"
+      ) {
         setGeneralErrorMessage(
           "An error occurred, please check your connection and try again."
         );
+        setCreatingPage(false);
+        return;
       }
+
+      Object.entries(error.response.data).forEach(
+        ([fieldName, errorList]: any) => {
+          setError(fieldName, {
+            message: errorList[0],
+          });
+        }
+      );
     }
 
     setCreatingPage(false);
@@ -115,23 +121,6 @@ export default function GenerateQrCodePage() {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-
-  // const handleLinkUrlChange = (
-  //   targetLink: LinkUrl,
-  //   event: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const updatedArray = linkUrls.map((link) => {
-  //     if (targetLink.link_id == link.link_id) {
-  //       return {
-  //         ...targetLink,
-  //         url_address: event.target.value,
-  //       };
-  //     }
-  //     return link;
-  //   });
-
-  //   setLinkUrls(updatedArray);
-  // };
 
   const renderLinks = linkUrls.map((link, index) => {
     return (
@@ -143,19 +132,12 @@ export default function GenerateQrCodePage() {
           placeholder="https://..."
           autoComplete="off"
           {...register(`links.${index}.url_address` as const, {
-            pattern:
-              /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/,
+            pattern: /^((?:https?:\/\/)?[^./]+(?:\.[^./]+)+(?:\/.*)?)$/,
           })}
         />
         {errors?.links?.[index] && (
           <small className="text-red-500 ml-2">Invalid URL.</small>
         )}
-        {/* <input
-          id={`link_${link.link_id}`}
-          type="text"
-          value={link.url_address}
-          onChange={(event) => handleLinkUrlChange(link, event)}
-        /> */}
       </div>
     );
   });

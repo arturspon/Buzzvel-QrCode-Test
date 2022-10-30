@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Link;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -38,7 +37,7 @@ class StorePageRequest extends FormRequest
             'links.*.link_id' => 'required|exists:links,id',
             'links.*.url_address' => [
                 'required',
-                'regex:/^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)$/',
+                'regex:;^((?:https?:\/\/)?[^./]+(?:\.[^./]+)+(?:\/.*)?)$;',
             ],
         ];
     }
