@@ -100,7 +100,7 @@ Page info response example:
     <summary>
         <code>POST</code>
         <code><b>/api/pages</b></code>
-        <code>Created a new page.</code>
+        <code>Creates a new page.</code>
     </summary>
 
 ##### Parameters
@@ -140,7 +140,6 @@ Example response for status 422:
    "name":[
       "The name has already been taken."
    ]
-}
 }
 ```
 
