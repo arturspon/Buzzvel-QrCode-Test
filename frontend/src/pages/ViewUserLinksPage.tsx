@@ -51,7 +51,7 @@ export default function ViewUserLinksPage() {
         links: parsedLinks,
       });
     } catch (error: any) {
-      if (error.response.status) {
+      if (error?.response?.status) {
         setErrorText("Sorry, this link is invalid.");
       } else {
         setErrorText(
