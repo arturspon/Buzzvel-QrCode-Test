@@ -3,7 +3,12 @@
 This repository contains the source code of a test from Buzzvel.  
 Below are the instructions to get the API and the WebApp up and running.
 
+Preview:
 ![Preview](showcase.gif)
+
+## Requirements
+
+This tutorial requires docker and docker-compose.
 
 ## The backend
 
@@ -13,8 +18,12 @@ The backend consists in a Laravel API. In order to run it, enter the backend fol
 docker-compose up
 ```
 
+If you're on Linux, make sure you have the necessary permissions to run the above command. If you want to be sure, you can run with `sudo`.
+
 After that, you'll need a database named `buzzvel`.  
-You can connect to the database using the following credentials:
+You can connect to the database using the command line or an app like DBeaver for example.
+
+The default credentials to the database are the following:
 
 ```
 host: localhost
@@ -29,6 +38,11 @@ After creating your `buzzvel` database, you can enter in the docker container an
 docker container exec -it buzzvel bash
 php artisan migrate:fresh --seed
 ```
+
+<span style="color:orange">
+   <b>Warning: </b>
+</span>
+be sure to create a database named buzzvel <u>before</u> running the above command, otherwise it will fail.
 
 Congratulations, now you have an API up and running!
 
